@@ -6,6 +6,21 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikitaUstnov/doto_list.git"
+  },
+  "browserList": "> 0.25%, not dead",
+  "keywords": [
+    "vue",
+    "typescript"
+  ],
+  "author": "NikitaUstinov <n.ustinov93@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NikitaUstnov/doto_list/issues"
+  },
+  "homepage": "https://github.com/NikitaUstnov/doto_list#readme",
   "dependencies": {
     "primeicons": "^6.0.1",
     "primevue": "^3.32.0",
