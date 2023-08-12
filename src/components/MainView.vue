@@ -69,7 +69,7 @@
                 >
                 <div class="item-action-buttons">
                   <Button
-                    v-if="selectedTabIndex === 0 || selectedTabIndex === 1"
+                    v-if="selectedTabIndex !== 3"
                     title="Edit todo"
                     severity="warning"
                     rounded
@@ -100,6 +100,7 @@
         <EditTodoForm
           v-if="editTodoVisible"
           :todoKey="todoKey"
+          :tabindex="selectedTabIndex"
           @abortChanges="cancelEditTask"
         />
       </div>
@@ -285,6 +286,14 @@ watch(
   () => store.state.todoList.length,
   (n, o) => {
     calculateTodosQtyForTodatAndTomorrrow();
+  }
+);
+
+watch(
+  () => selectedTabIndex.value,
+  (n, o) => {
+    newTaskBarVisible.value = false;
+    editTodoVisible.value = false;
   }
 );
 

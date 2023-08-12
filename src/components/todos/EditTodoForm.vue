@@ -94,6 +94,7 @@ const toast = useToast();
 
 const props = defineProps({
   todoKey: Number,
+  tabindex: Number,
 });
 
 const foundTaskValue = ref<Todo>();
@@ -120,18 +121,26 @@ const saveChanges = (): void => {
   objectCopy.status = todoStatusValue.value;
   objectCopy.children[0].label = descriptionInputValue.value;
 
-  store.dispatch("editTodo", objectCopy);
+  store.dispatch("editTodo", {
+    edittedTodo: objectCopy,
+    tabindex: props.tabindex,
+  });
   toast.success("Task has been updated");
   emit("abortChanges");
 };
 
 //find dask by id
 const findTask = (id: number | undefined): void => {
-  console.log("ID", id);
   if (id === null || id === undefined) return;
 
-  const foundTask = store.state.todoList.find((todo: Todo) => todo.key === id);
+  const foundTask =
+    props.tabindex === 2
+      ? store.state.doneList.find((todo: Todo) => todo.key === id)
+      : store.state.todoList.find((todo: Todo) => todo.key === id);
 
+  console.log(foundTask, props.tabindex);
+
+  if (!foundTask) return;
   foundTaskValue.value = foundTask;
 
   titleInputValue.value = foundTask.label;

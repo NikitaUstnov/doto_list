@@ -116,31 +116,67 @@ export default createStore<State>({
 
     /**
      * Edding todo`s fields and saving in local storage
-     *
+     *@param param0 object Updated todo
+     *@param param1 number If tabindex 2 we must search todo in doneList
      */
-    editTodo({ state, commit }, edittedTodo: Todo) {
+    editTodo({ state, commit }, { edittedTodo, tabindex }) {
       const newTodo = edittedTodo;
 
-      let indexToUpdate = state.todoList.findIndex(
-        (obj) => obj.key === newTodo.key
-      );
+      if (tabindex === 2) {
+        if (!newTodo.status) {
+          commit("setTodos", [newTodo, ...state.todoList]);
 
-      const todos = state.todoList;
+          commit(
+            "setDoneList",
+            state.doneList.filter(({ key }) => key !== newTodo.key)
+          );
+        } else {
+          let indexToUpdate = state.doneList.findIndex(
+            (obj) => obj.key === newTodo.key
+          );
 
-      todos.splice(indexToUpdate, 1, newTodo);
+          const doneTodo = state.doneList;
 
-      commit("setTodos", todos);
-      localStorage.setItem("todoList", JSON.stringify(state.todoList));
+          doneTodo.splice(indexToUpdate, 1, newTodo);
 
-      if (newTodo.status) {
-        commit("setDoneList", [newTodo, ...state.doneList]);
+          commit("setDoneList", doneTodo);
+        }
+      } else {
+        if (!newTodo.status) {
+          let indexToUpdate = state.todoList.findIndex(
+            (obj) => obj.key === newTodo.key
+          );
 
-        commit(
-          "setTodos",
-          state.todoList.filter(({ key }) => key !== newTodo.key)
+          const todos = state.todoList;
+
+          todos.splice(indexToUpdate, 1, newTodo);
+
+          commit("setTodos", todos);
+        } else {
+          commit("setDoneList", [newTodo, ...state.doneList]);
+
+          commit(
+            "setTodos",
+            state.todoList.filter(({ key }) => key !== newTodo.key)
+          );
+        }
+      }
+
+      //Updating local storage
+      const storedTodos: string | null = localStorage.getItem("todoList");
+
+      if (storedTodos) {
+        const parsedStoredTodos = JSON.parse(storedTodos);
+
+        let indexToUpdate = parsedStoredTodos.findIndex(
+          (obj: Todo) => obj.key === newTodo.key
         );
-        // localStorage.setItem("todoList", JSON.stringify(state.todoList));
-        // return;
+
+        const todos = parsedStoredTodos;
+
+        todos.splice(indexToUpdate, 1, newTodo);
+
+        localStorage.setItem("todoList", JSON.stringify(todos));
       }
     },
   },
