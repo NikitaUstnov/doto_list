@@ -205,7 +205,6 @@ const editTodo = (event: any, key: number): void => {
 };
 
 const removeTodo = (event: any, todo: ChildrenTodo): void => {
-  console.log(todo);
   if (todo.parentKey === todoKey.value && editTodoVisible.value) {
     editTodoVisible.value = false;
   }

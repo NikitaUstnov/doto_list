@@ -138,8 +138,6 @@ const findTask = (id: number | undefined): void => {
       ? store.state.doneList.find((todo: Todo) => todo.key === id)
       : store.state.todoList.find((todo: Todo) => todo.key === id);
 
-  console.log(foundTask, props.tabindex);
-
   if (!foundTask) return;
   foundTaskValue.value = foundTask;
 

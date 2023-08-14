@@ -59,7 +59,6 @@ export default createStore<State>({
     addTodo({ state, commit }, todo: Todo) {
       commit("setTodos", [todo, ...state.todoList]);
       localStorage.setItem("todoList", JSON.stringify(state.todoList));
-      console.log("Todo added");
     },
 
     /**
@@ -72,16 +71,12 @@ export default createStore<State>({
     ) {
       const { tabId, todoKey } = todoIdentifier;
 
-      console.log("todoKey: ", todoKey);
-      console.log("tabId: ", tabId);
       switch (tabId) {
         case 2: // Remove completed todo from doneList
           const newDoneList = state.doneList.filter(
             ({ key }) => key !== todoKey
           );
           commit("setDoneList", newDoneList);
-
-          console.log("newDoneList", newDoneList);
           break;
 
         case 3: // Remove failed todo from FailedList
